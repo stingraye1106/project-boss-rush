@@ -1,6 +1,7 @@
 using System;
 using NF.Main.Core;
 using NF.Main.Core.PlayerStateMachine;
+using NF.Main.Gameplay.Movement;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -10,7 +11,8 @@ namespace NF.Main.Gameplay.PlayerInput
     {
         [TabGroup("References")][SerializeField] private PlayerInputReader _playerInput;
         [TabGroup("References")][SerializeField] private Animator _animator;
-        
+        [TabGroup("References")][SerializeField] private PlayerMovement _playerMovement;
+
         private StateMachine _stateMachine;
         public PlayerState PlayerState { get; set; }
         
@@ -88,6 +90,8 @@ namespace NF.Main.Gameplay.PlayerInput
         private void OnPlayerMove(Vector2 movementDirection)
         {
             Debug.Log($"Player Movement: {movementDirection}");
+            var convertedDirection = new Vector3(movementDirection.x, 0, movementDirection.y);
+            _playerMovement.Direction = convertedDirection;
         }
     }
 }
