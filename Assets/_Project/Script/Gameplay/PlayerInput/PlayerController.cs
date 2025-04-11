@@ -1,6 +1,7 @@
 using System;
 using NF.Main.Core;
 using NF.Main.Core.PlayerStateMachine;
+using NF.Main.Gameplay.Character;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -10,7 +11,8 @@ namespace NF.Main.Gameplay.PlayerInput
     {
         [TabGroup("References")][SerializeField] private PlayerInputReader _playerInput;
         [TabGroup("References")][SerializeField] private Animator _animator;
-        
+        [TabGroup("References")][SerializeField] private PlayerCharacter _playerCharacter;
+
         private StateMachine _stateMachine;
         public PlayerState PlayerState { get; set; }
         
@@ -61,9 +63,11 @@ namespace NF.Main.Gameplay.PlayerInput
             
             // Declare Player States
             var idleState = new PlayerIdleState(this, _animator);
+            var movingState = new PlayerMovingState(this, _animator);
             
             // Define Player State Transitions
             Any(idleState, new FuncPredicate(ReturnToIdleState));
+            At(idleState, movingState, new FuncPredicate(TransitionToMovingState));
             
             // Set Initial State
             _stateMachine.SetState(idleState);
@@ -77,6 +81,12 @@ namespace NF.Main.Gameplay.PlayerInput
         {
             return PlayerState == PlayerState.Idle;
         }
+
+        //Method that handles the condition if the player should transition to moving state
+        private bool TransitionToMovingState()
+        {
+            return PlayerState == PlayerState.Moving;
+        }
         
         //Method that handles logic when the attack button is pressed
         private void OnAttack()
@@ -87,7 +97,17 @@ namespace NF.Main.Gameplay.PlayerInput
         //Player movement logic is handled here
         private void OnPlayerMove(Vector2 movementDirection)
         {
+            if (movementDirection != Vector2.zero)
+            {
+                PlayerState = PlayerState.Moving;
+            } else
+            {
+                PlayerState = PlayerState.Idle;
+            }
+
             Debug.Log($"Player Movement: {movementDirection}");
+            var convertedDirection = new Vector3(movementDirection.x, 0, movementDirection.y);
+            _playerCharacter.Move(convertedDirection);
         }
     }
 }
