@@ -24,14 +24,12 @@ namespace NF.Main.Gameplay.Movement
 
         private void FaceAtDirection()
         {
-            if (_movement.Direction.sqrMagnitude > 0f)
-            {
-                _facingDirection = _movement.Direction;
+            if (_movement.Direction.normalized != Vector3.zero)
+            { 
+                var lookRotation = Quaternion.LookRotation(_movement.Direction.normalized, Vector3.up);
+                var step = _rotateSpeed * Time.deltaTime;
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, step);
             }
-
-            var lookRotation = Quaternion.LookRotation(_facingDirection, Vector3.up);
-            var step = _rotateSpeed * Time.deltaTime;
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, step);
         }
     }
 }

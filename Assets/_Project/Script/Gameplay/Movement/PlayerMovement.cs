@@ -5,14 +5,14 @@ namespace NF.Main.Gameplay.Movement
 {
     public class PlayerMovement : MonoBehaviour, IMovement
     {
-        [TabGroup("Movement Settings")][SerializeField] private float _speed;
         [TabGroup("Movement Settings")][SerializeField] private float _speedMultiplier;
-        
+
+        private float _speed;
         private Rigidbody _rigidbody;
         private Vector3 _direction = Vector3.zero;
 
 
-        public float Speed { get => _speed; }
+        public float Speed { get => _speed; set => _speed = value; }
         public float SpeedMultiplier { get => _speedMultiplier; set => _speedMultiplier = value; }
         public Vector3 Direction { get => _direction; set => _direction = value; }
 
@@ -24,10 +24,10 @@ namespace NF.Main.Gameplay.Movement
 
         private void FixedUpdate()
         {
-            SetVelocity(_direction);
+            MoveToDirection(_direction);
         }
 
-        private void SetVelocity(Vector3 moveDirection)
+        private void MoveToDirection(Vector3 moveDirection)
         {
             var currentSpeed = _speed * _speedMultiplier;
             var step = currentSpeed * Time.fixedDeltaTime;
