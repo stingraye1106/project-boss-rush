@@ -10,6 +10,9 @@ public class PlayerInputReader : SerializedScriptableObject, IPlayerActions, IUI
 {
     public Subject<Vector2> Movement;
     public Subject<Unit> Attack;
+    public Subject<Unit> PlayerAbility1;
+    public Subject<Unit> PlayerAbility2;
+    public Subject<Unit> PlayerAbility3;
     
     
     private InputSystem_Actions _inputActions;
@@ -30,6 +33,9 @@ public class PlayerInputReader : SerializedScriptableObject, IPlayerActions, IUI
 
         Movement = new Subject<Vector2>();
         Attack = new Subject<Unit>();
+        PlayerAbility1 = new Subject<Unit>();
+        PlayerAbility2 = new Subject<Unit>();
+        PlayerAbility3 = new Subject<Unit>();
     }
     
     public void EnablePlayerActions() 
@@ -118,5 +124,29 @@ public class PlayerInputReader : SerializedScriptableObject, IPlayerActions, IUI
 
     public void OnTrackedDeviceOrientation(InputAction.CallbackContext context)
     {
+    }
+
+    public void OnPlayerAbility1(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            PlayerAbility1.OnNext(UniRx.Unit.Default);
+        }
+    }
+
+    public void OnPlayerAbility2(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            PlayerAbility2.OnNext(UniRx.Unit.Default);
+        }
+    }
+
+    public void OnPlayerAbility3(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            PlayerAbility3.OnNext(UniRx.Unit.Default);
+        }
     }
 }

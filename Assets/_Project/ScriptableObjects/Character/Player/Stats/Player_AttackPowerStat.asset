@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dc2e8c8aad18a542acfaba5c0816b22, type: 3}
   m_Name: Player_AttackPowerStat
   m_EditorClassIdentifier: 
-  _value: 5
+  _defaultValue: 5

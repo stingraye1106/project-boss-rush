@@ -25,6 +25,7 @@ namespace NF.Main.Gameplay.Movement
         private void FixedUpdate()
         {
             MoveToDirection(_direction);
+            Debug.Log($"Moving direction: {_direction}");
         }
 
         private void MoveToDirection(Vector3 moveDirection)

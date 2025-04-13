@@ -16,7 +16,12 @@ namespace NF.Main.Gameplay.Character
 
         public override void TakeDamage(float damage)
         {
-            _health.Value -= damage;
+            _health.CurrentValue -= damage;
+        }
+
+        public override void StopMovement()
+        {
+            _movement.Direction = Vector3.zero;
         }
     }
 }
