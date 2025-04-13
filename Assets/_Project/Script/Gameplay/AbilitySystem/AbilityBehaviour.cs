@@ -13,17 +13,27 @@ namespace NF.Main.Gameplay.AbilitySystem
 
 
 
-        private IEnumerator ExecutePhases(GameObject abilityUser)
+        private void ResetPhases()
+        {
+            foreach (var phase in _abilityPhases) 
+            {
+                phase.Reset(); 
+            }
+            Debug.Log("Phases reset.");
+        }
+
+        private IEnumerator RunPhases(GameObject source)
         {
             foreach (var phase in _abilityPhases)
             {
-                yield return phase.TriggerPhase(abilityUser);
+                yield return phase.TriggerPhase(source);
             }
         }
 
-        public void TriggerBehaviour(GameObject abilityUser)
+        public void TriggerBehaviour(GameObject source)
         {
-            abilityUser.GetComponent<MonoBehaviour>().StartCoroutine(ExecutePhases(abilityUser));
+            ResetPhases();
+            source.GetComponent<MonoBehaviour>().StartCoroutine(RunPhases(source));
         }
     }
 }

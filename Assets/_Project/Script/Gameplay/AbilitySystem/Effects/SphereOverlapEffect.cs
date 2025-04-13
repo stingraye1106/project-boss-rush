@@ -10,12 +10,13 @@ namespace NF.Main.Gameplay.AbilitySystem.Effects
     {
         [SerializeField] private Stat _radius;
         [SerializeField] private List<AEffect> _effects;
+        [SerializeField] private LayerMask _layerMask;
 
 
         // Returns a list of colliders based from provided center position and radius values.
         private Collider[] GetHitColliders(Vector3 centerPos, float radius)
         {
-            return Physics.OverlapSphere(centerPos, radius);
+            return Physics.OverlapSphere(centerPos, radius, _layerMask);
         }
 
         // Logic for applying the sphere overlap effect
@@ -24,6 +25,8 @@ namespace NF.Main.Gameplay.AbilitySystem.Effects
             var hitColliders = GetHitColliders(source.transform.position, _radius.DefaultValue);
             var sourceCharacter = source.GetComponent<ACharacter>();
             var charactersHit = new List<GameObject>();
+
+            Debug.Log($"Colliders found: {hitColliders.Length}");
 
             foreach (var collider in hitColliders)
             {

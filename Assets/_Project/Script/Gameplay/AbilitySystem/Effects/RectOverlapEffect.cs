@@ -12,14 +12,16 @@ namespace NF.Main.Gameplay.AbilitySystem.Effects
         [SerializeField] private Stat _height;
         [SerializeField] private Stat _depth;
         [SerializeField] private List<AEffect> _effects;
-
+        [SerializeField] private LayerMask _layerMask;
+        private float _offset = 2f;
 
 
         // Returns a list of colliders based from center, width, height, depth, and rotation using Physics.OverlapBox.
         private Collider[] GetHitColliders(Vector3 centerPos, float width, float height, float depth, Quaternion rotation)
         {
             var boxExtents = new Vector3(width, height, depth);
-            return Physics.OverlapBox(centerPos, boxExtents, rotation);
+            var offset = Vector3.forward * _offset;
+            return Physics.OverlapBox(centerPos + offset, boxExtents / 2, rotation, _layerMask);
         }
 
 
@@ -30,8 +32,11 @@ namespace NF.Main.Gameplay.AbilitySystem.Effects
             var sourceCharacter = source.GetComponent<ACharacter>();
             var charactersHit = new List<GameObject>();
 
+            Debug.Log($"Colliders found: {hitColliders.Length}");
+
             foreach (var collider in hitColliders)
             {
+                Debug.Log(collider.gameObject.name);
                 // Prevents friendly fire. Instead of comparing string-based tags, we compare the character types within the character class.
                 var colliderCharacter = collider.GetComponent<ACharacter>();
                 if (colliderCharacter.CharacterType != sourceCharacter.CharacterType)

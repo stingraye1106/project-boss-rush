@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using NF.Main.Gameplay.Stats;
@@ -12,6 +11,16 @@ namespace NF.Main.Gameplay.AbilitySystem
         [SerializeField] private Stat _duration;
         [SerializeField] private List<EffectData> _effectsList;
         private Dictionary<float, List<AEffect>> _effectsDictionary;
+        private bool _isDone;
+        
+        public Stat Duration => _duration;
+        public bool IsDone => _isDone;
+
+
+        public void Reset()
+        {
+            _isDone = false;
+        }
 
         public IEnumerator TriggerPhase(GameObject abilityUser)
         {
@@ -40,6 +49,7 @@ namespace NF.Main.Gameplay.AbilitySystem
                 yield return null;
             }
 
+            _isDone = true;
             Debug.Log("Phase done");
         }
     }
