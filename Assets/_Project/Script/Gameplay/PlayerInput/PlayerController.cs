@@ -52,6 +52,9 @@ namespace NF.Main.Gameplay.PlayerInput
             base.OnSubscriptionSet();
             AddEvent(_playerInput.Attack, _ => OnAttack());
             AddEvent(_playerInput.Movement, OnPlayerMove);
+            AddEvent(_playerInput.PlayerAbility1, _ => OnActivateAbility1());
+            AddEvent(_playerInput.PlayerAbility2, _ => OnActivateAbility2());
+            AddEvent(_playerInput.PlayerAbility3, _ => OnActivateAbility3());
         }
 
 
@@ -108,6 +111,21 @@ namespace NF.Main.Gameplay.PlayerInput
             Debug.Log($"Player Movement: {movementDirection}");
             var convertedDirection = new Vector3(movementDirection.x, 0, movementDirection.y);
             _playerCharacter.Move(convertedDirection);
+        }
+
+        private void OnActivateAbility1()
+        {
+            Debug.Log($"Ability 1 activated");
+        }
+
+        private void OnActivateAbility2()
+        {
+            Debug.Log($"Ability 2 activated");
+        }
+
+        private void OnActivateAbility3()
+        {
+            Debug.Log($"Ability 3 activated");
         }
     }
 }
