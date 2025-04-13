@@ -9,11 +9,21 @@ namespace NF.Main.Gameplay.AbilitySystem.Effects
     {
         [SerializeField] private Stat _damage;
 
-        // Logic for applying the deal damage effect.
-        public override void ApplyEffect(GameObject hitTarget)
+        // Logic for damage computation
+        private float ComputeDamage(float baseDamage, float additionalDamage)
         {
-            if (hitTarget.TryGetComponent(out IDamageable damageable))
-                damageable.TakeDamage(_damage.DefaultValue);
+            return baseDamage + additionalDamage;
+        }
+
+
+        // Logic for applying the deal damage effect.
+        public override void ApplyEffect(GameObject source, GameObject target)
+        {
+            var sourceCharacter = source.GetComponent<ACharacter>();
+            var computedDamage = ComputeDamage(sourceCharacter.AttackPower.DefaultValue, _damage.DefaultValue);
+
+            if (target.TryGetComponent(out IDamageable damageable))
+                damageable.TakeDamage(computedDamage);
         }
     }
 }

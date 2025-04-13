@@ -24,17 +24,17 @@ namespace NF.Main.Gameplay.AbilitySystem.Effects
 
 
         // Logic for applying the rect overlap effect.
-        public override void ApplyEffect(GameObject user)
+        public override void ApplyEffect(GameObject source, GameObject target = null)
         {
-            var hitColliders = GetHitColliders(user.transform.position, _width.DefaultValue, _height.DefaultValue, _depth.DefaultValue, user.transform.rotation);
-            var userCharacter = user.GetComponent<ACharacter>();
+            var hitColliders = GetHitColliders(source.transform.position, _width.DefaultValue, _height.DefaultValue, _depth.DefaultValue, source.transform.rotation);
+            var sourceCharacter = source.GetComponent<ACharacter>();
             var charactersHit = new List<GameObject>();
 
             foreach (var collider in hitColliders)
             {
                 // Prevents friendly fire. Instead of comparing string-based tags, we compare the character types within the character class.
                 var colliderCharacter = collider.GetComponent<ACharacter>();
-                if (colliderCharacter.CharacterType != userCharacter.CharacterType)
+                if (colliderCharacter.CharacterType != sourceCharacter.CharacterType)
                 {
                     var hitCharacter = collider.gameObject;
 
@@ -44,7 +44,7 @@ namespace NF.Main.Gameplay.AbilitySystem.Effects
                         // Go through the list of sub-effects to apply to the hit character.
                         foreach (var effect in _effects)
                         {
-                            effect.ApplyEffect(hitCharacter);
+                            effect.ApplyEffect(source, hitCharacter);
                         }
 
                         charactersHit.Add(hitCharacter);
