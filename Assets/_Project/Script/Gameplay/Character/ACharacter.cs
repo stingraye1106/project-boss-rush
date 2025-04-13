@@ -3,6 +3,8 @@ using NF.Main.Gameplay.Movement;
 using Sirenix.OdinInspector;
 using NF.Main.Gameplay.Stats;
 using UnityEngine;
+using System.Collections.Generic;
+using NF.Main.Gameplay.AbilitySystem;
 
 namespace NF.Main.Gameplay.Character
 {
@@ -16,6 +18,9 @@ namespace NF.Main.Gameplay.Character
         [TabGroup("Stats")][SerializeField] protected AttackPowerStat _attackPower;
         [TabGroup("Stats")][SerializeField] protected SpeedStat _speed;
 
+        // Ability list
+        [SerializeField] protected List<Ability> _abilities;
+
         // Movement logic
         protected IMovement _movement;
 
@@ -23,9 +28,10 @@ namespace NF.Main.Gameplay.Character
         public HealthStat Health => _health;
         public AttackPowerStat AttackPower => _attackPower;
         public SpeedStat Speed => _speed;
+        public List<Ability> Abilities => _abilities;
 
 
-        protected void Awake()
+        protected virtual void Awake()
         {
             _movement = GetComponent<IMovement>();
             _movement.Speed = _speed.DefaultValue;

@@ -116,16 +116,19 @@ namespace NF.Main.Gameplay.PlayerInput
         private void OnActivateAbility1()
         {
             Debug.Log($"Ability 1 activated");
+            _playerCharacter.Abilities[0].Use(_playerCharacter.gameObject);
         }
 
         private void OnActivateAbility2()
         {
             Debug.Log($"Ability 2 activated");
+            _playerCharacter.Abilities[1].Use(_playerCharacter.gameObject);
         }
 
         private void OnActivateAbility3()
         {
             Debug.Log($"Ability 3 activated");
+            _playerCharacter.Abilities[2].Use(_playerCharacter.gameObject);
         }
     }
 }
