@@ -1,4 +1,3 @@
-using System;
 using NF.Main.Core;
 using NF.Main.Core.PlayerStateMachine;
 using NF.Main.Gameplay.Character;
@@ -15,6 +14,7 @@ namespace NF.Main.Gameplay.PlayerInput
 
         private StateMachine _stateMachine;
         public PlayerState PlayerState { get; set; }
+        public PlayerCharacter PlayerCharacter => _playerCharacter;
         
         private void Start()
         {
@@ -67,11 +67,20 @@ namespace NF.Main.Gameplay.PlayerInput
             // Declare Player States
             var idleState = new PlayerIdleState(this, _animator);
             var movingState = new PlayerMovingState(this, _animator);
-            
+            var ability1State = new PlayerAbility1State(this, _animator);
+            var ability2State = new PlayerAbility2State(this, _animator);
+            var ability3State = new PlayerAbility3State(this, _animator);
+
             // Define Player State Transitions
             Any(idleState, new FuncPredicate(ReturnToIdleState));
             At(idleState, movingState, new FuncPredicate(TransitionToMovingState));
-            
+            At(idleState, ability1State, new FuncPredicate(TransitionToAbility1State));
+            At(movingState, ability1State, new FuncPredicate(TransitionToAbility1State));
+            At(idleState, ability2State, new FuncPredicate(TransitionToAbility2State));
+            At(movingState, ability2State, new FuncPredicate(TransitionToAbility2State));
+            At(idleState, ability3State, new FuncPredicate(TransitionToAbility3State));
+            At(movingState, ability3State, new FuncPredicate(TransitionToAbility3State));
+
             // Set Initial State
             _stateMachine.SetState(idleState);
         }
@@ -90,6 +99,31 @@ namespace NF.Main.Gameplay.PlayerInput
         {
             return PlayerState == PlayerState.Moving;
         }
+
+        private bool TransitionToAbility1State()
+        {
+            return PlayerState == PlayerState.Ability1;
+        }
+
+        private bool TransitionToAbility2State()
+        {
+            return PlayerState == PlayerState.Ability2;
+        }
+
+        private bool TransitionToAbility3State() 
+        { 
+            return PlayerState == PlayerState.Ability3;
+        }
+
+        private bool CanMove()
+        {
+            return PlayerState == PlayerState.Idle || PlayerState == PlayerState.Moving;
+        }
+
+        private bool CanUseAbility()
+        {
+            return PlayerState != PlayerState.Ability1 && PlayerState != PlayerState.Ability2 && PlayerState != PlayerState.Ability3;
+        }
         
         //Method that handles logic when the attack button is pressed
         private void OnAttack()
@@ -100,35 +134,64 @@ namespace NF.Main.Gameplay.PlayerInput
         //Player movement logic is handled here
         private void OnPlayerMove(Vector2 movementDirection)
         {
-            if (movementDirection != Vector2.zero)
+            if (CanMove())
             {
-                PlayerState = PlayerState.Moving;
-            } else
-            {
-                PlayerState = PlayerState.Idle;
-            }
+                if (movementDirection != Vector2.zero)
+                {
+                    PlayerState = PlayerState.Moving;
 
-            Debug.Log($"Player Movement: {movementDirection}");
-            var convertedDirection = new Vector3(movementDirection.x, 0, movementDirection.y);
-            _playerCharacter.Move(convertedDirection);
+                    Debug.Log($"Player Movement: {movementDirection}");
+                    var convertedDirection = new Vector3(movementDirection.x, 0, movementDirection.y);
+                    _playerCharacter.Move(convertedDirection);
+                }
+                else
+                {
+                    PlayerState = PlayerState.Idle;
+                    _playerCharacter.StopMovement();
+                }
+            }
         }
 
         private void OnActivateAbility1()
         {
-            Debug.Log($"Ability 1 activated");
-            _playerCharacter.Abilities[0].Use(_playerCharacter.gameObject);
+            if (CanUseAbility())
+            {
+                _playerCharacter.StopMovement();
+
+                PlayerState = PlayerState.Ability1;
+            } else
+            {
+                Debug.Log("Ability/attack ongoing");
+            }
+
         }
 
         private void OnActivateAbility2()
         {
-            Debug.Log($"Ability 2 activated");
-            _playerCharacter.Abilities[1].Use(_playerCharacter.gameObject);
+            if (CanUseAbility())
+            {
+                _playerCharacter.StopMovement();
+
+                PlayerState = PlayerState.Ability2;
+            } else
+            {
+                Debug.Log("Ability/attack ongoing");
+            }
+
         }
 
         private void OnActivateAbility3()
         {
-            Debug.Log($"Ability 3 activated");
-            _playerCharacter.Abilities[2].Use(_playerCharacter.gameObject);
+            if (CanUseAbility())
+            {
+                _playerCharacter.StopMovement();
+
+                PlayerState = PlayerState.Ability3;
+            } else
+            {
+                Debug.Log("Ability/attack ongoing");
+            }
+
         }
     }
 }

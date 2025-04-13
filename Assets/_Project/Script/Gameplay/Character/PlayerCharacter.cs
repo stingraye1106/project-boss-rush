@@ -18,6 +18,11 @@ namespace NF.Main.Gameplay.Character
         {
             _health.CurrentValue -= damage;
         }
+
+        public override void StopMovement()
+        {
+            _movement.Direction = Vector3.zero;
+        }
     }
 }
 

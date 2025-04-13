@@ -24,6 +24,11 @@ namespace NF.Main.Gameplay.Character
             _health.CurrentValue -= damage;
             Debug.Log($"Enemy took {damage} damage! Current enemy health: {_health.CurrentValue}");
         }
+
+        public override void StopMovement()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
 

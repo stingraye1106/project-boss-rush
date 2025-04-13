@@ -43,5 +43,7 @@ namespace NF.Main.Gameplay.Character
         public abstract void TakeDamage(float damage);
 
         public abstract void Move(Vector3 direction);
+
+        public abstract void StopMovement();
     }
 }
