@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0441959408fd70c4389dce09ee57c727, type: 3}
   m_Name: Enemy_SpeedStat
   m_EditorClassIdentifier: 
-  _defaultValue: 3
+  _defaultValue: 2
