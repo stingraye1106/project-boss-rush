@@ -31,7 +31,8 @@ namespace NF.Main.Gameplay.Character
         public List<Ability> Abilities => _abilities;
 
 
-        protected virtual void Awake()
+
+        protected virtual void OnEnable()
         {
             _movement = GetComponent<IMovement>();
             _movement.Speed = _speed.DefaultValue;

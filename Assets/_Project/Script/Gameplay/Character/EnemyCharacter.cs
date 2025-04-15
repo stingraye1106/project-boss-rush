@@ -1,12 +1,17 @@
+using NF.Main.Gameplay.Movement;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace NF.Main.Gameplay.Character
 {
     public class EnemyCharacter : ACharacter
     {
-        protected override void Awake()
+        [TabGroup("Enemy Movement Settings")][SerializeField] private Transform _chaseTarget;
+
+
+        private void Update()
         {
-            _health.CurrentValue = _health.DefaultValue;
+            _movement.Direction = _chaseTarget.position;
         }
 
         public override void Attack()
@@ -16,7 +21,7 @@ namespace NF.Main.Gameplay.Character
 
         public override void Move(Vector3 direction)
         {
-            throw new System.NotImplementedException();
+            _movement.CanMove = true;
         }
 
         public override void TakeDamage(float damage)
@@ -27,7 +32,7 @@ namespace NF.Main.Gameplay.Character
 
         public override void StopMovement()
         {
-            throw new System.NotImplementedException();
+            _movement.CanMove = false;
         }
     }
 }

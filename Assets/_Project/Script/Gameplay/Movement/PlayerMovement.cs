@@ -10,22 +10,28 @@ namespace NF.Main.Gameplay.Movement
         private float _speed;
         private Rigidbody _rigidbody;
         private Vector3 _direction = Vector3.zero;
+        private bool _canMove;
 
 
         public float Speed { get => _speed; set => _speed = value; }
         public float SpeedMultiplier { get => _speedMultiplier; set => _speedMultiplier = value; }
         public Vector3 Direction { get => _direction; set => _direction = value; }
+        public bool CanMove { get => _canMove; set => _canMove = value; }
 
 
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
+            _canMove = true;
         }
 
         private void FixedUpdate()
         {
-            MoveToDirection(_direction);
-            Debug.Log($"Moving direction: {_direction}");
+            if (_canMove)
+            {
+                MoveToDirection(_direction);
+                Debug.Log($"Moving direction: {_direction}");
+            }
         }
 
         private void MoveToDirection(Vector3 moveDirection)
