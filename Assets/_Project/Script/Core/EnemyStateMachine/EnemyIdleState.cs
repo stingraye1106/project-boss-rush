@@ -5,14 +5,14 @@ namespace NF.Main.Core.EnemyStateMachine
 {
     public class EnemyIdleState : EnemyBaseState
     {
-        protected EnemyIdleState(EnemyController enemyController, Animator animator) : base(enemyController, animator)
+        public EnemyIdleState(EnemyController enemyController, Animator animator) : base(enemyController, animator)
         {
         }
 
         public override void OnEnter()
         {
             base.OnEnter();
-            // _animator.CrossFade(IdleHash, 0.5f);
+            _animator.CrossFade(IdleHash, 0.5f);
         }
 
         public override void Update()
