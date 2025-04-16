@@ -26,7 +26,6 @@ namespace NF.Main.Gameplay.Movement
         public override void Initialize(object data = null)
         {
             base.Initialize(data);
-            _canMove = true;
             UpdateMovementSpeed();
         }
 
