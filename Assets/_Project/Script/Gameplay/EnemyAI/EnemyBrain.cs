@@ -1,11 +1,15 @@
+using NF.Main.Gameplay.AbilitySystem;
+using NF.Main.Gameplay.Character;
+using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 
 namespace NF.Main.Gameplay.EnemyAI
 {
-    // Component that controls what the enemy AI should do
     public class EnemyBrain : MonoBehaviour
     {
+        private List<Ability> _enemyAbilities;
+
         public Subject<bool> MoveTrigger;
         public Subject<Unit> BasicAttackTrigger;
         public Subject<Unit> Ability1Trigger;
@@ -14,11 +18,20 @@ namespace NF.Main.Gameplay.EnemyAI
 
         private void OnEnable()
         {
+            _enemyAbilities = gameObject.GetComponent<EnemyCharacter>().Abilities;
+
             MoveTrigger = new Subject<bool>();
             BasicAttackTrigger = new Subject<Unit>();
             Ability1Trigger = new Subject<Unit>();
             Ability2Trigger = new Subject<Unit>();
             Ability3Trigger = new Subject<Unit>();
+        }
+
+        // Get random ability
+        private Ability GetRandomAbility()
+        {
+            int randomIndex = UnityEngine.Random.Range(0, _enemyAbilities.Count);
+            return _enemyAbilities[randomIndex];
         }
 
         // Trigger event that will enable the chase state.
