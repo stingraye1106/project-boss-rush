@@ -1,3 +1,4 @@
+using UniRx;
 using UnityEngine;
 
 namespace NF.Main.Gameplay.Character
@@ -5,9 +6,16 @@ namespace NF.Main.Gameplay.Character
     public class EnemyCharacter : ACharacter
     {
         [SerializeField] private float _attackRange;
+        public Subject<Unit> OnDeath;
 
         public Transform ChaseTarget { get; set; }
         public float AttackRange => _attackRange;
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            OnDeath = new Subject<Unit>();
+        }
 
         // Enemy will pursue the selected chase target.
         private void Update()
@@ -35,7 +43,8 @@ namespace NF.Main.Gameplay.Character
 
             if (_health.CurrentValue <= 0) 
             {
-                // Play death animation
+                // Play death animation by invoking the on death event
+                OnDeath.OnNext(Unit.Default);
 
                 // Set game state to victory.
                 GameManager.Instance.GameState = GameState.Victory;

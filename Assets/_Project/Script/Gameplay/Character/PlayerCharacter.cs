@@ -1,9 +1,18 @@
+using UniRx;
 using UnityEngine;
 
 namespace NF.Main.Gameplay.Character
 {
     public class PlayerCharacter : ACharacter
     {
+        public Subject<Unit> OnDeath;
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            OnDeath = new Subject<Unit>();
+        }
+
         // Uses the basic attack ability.
         public override void Attack()
         {
@@ -24,7 +33,8 @@ namespace NF.Main.Gameplay.Character
 
             if (_health.CurrentValue <= 0 )
             {
-                // Play death animation
+                // Play death animation by invoking the on death event
+                OnDeath.OnNext(Unit.Default);
 
                 // Set game state to Game Over.
                 GameManager.Instance.GameState = GameState.GameOver;

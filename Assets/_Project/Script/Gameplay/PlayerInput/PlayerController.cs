@@ -2,6 +2,7 @@ using NF.Main.Core;
 using NF.Main.Core.PlayerStateMachine;
 using NF.Main.Gameplay.Character;
 using Sirenix.OdinInspector;
+using Sirenix.OdinInspector.Editor.Validation;
 using UnityEngine;
 
 namespace NF.Main.Gameplay.PlayerInput
@@ -55,6 +56,7 @@ namespace NF.Main.Gameplay.PlayerInput
             AddEvent(_playerInput.PlayerAbility1, _ => OnActivateAbility1());
             AddEvent(_playerInput.PlayerAbility2, _ => OnActivateAbility2());
             AddEvent(_playerInput.PlayerAbility3, _ => OnActivateAbility3());
+            AddEvent(_playerCharacter.OnDeath, _ => OnEnterDeath());
         }
 
 
@@ -71,10 +73,18 @@ namespace NF.Main.Gameplay.PlayerInput
             var ability1State = new PlayerAbility1State(this, _animator);
             var ability2State = new PlayerAbility2State(this, _animator);
             var ability3State = new PlayerAbility3State(this, _animator);
+            var deathState = new PlayerDeathState(this, _animator);
 
             // Define Player State Transitions
             Any(idleState, new FuncPredicate(ReturnToIdleState));
+
+            // Movement transitions
             At(idleState, movingState, new FuncPredicate(TransitionToMovingState));
+
+            // Death transitions
+            Any(deathState, new FuncPredicate(TransitionToDeathState));
+
+            // Attack / ability state transitions
             At(idleState, basicAttackState, new FuncPredicate(TransitionToBasicAttackState));
             At(movingState, basicAttackState, new FuncPredicate(TransitionToBasicAttackState));
             At(idleState, ability1State, new FuncPredicate(TransitionToAbility1State));
@@ -103,31 +113,43 @@ namespace NF.Main.Gameplay.PlayerInput
             return PlayerState == PlayerState.Moving;
         }
 
+        // Transition to Ability 1
         private bool TransitionToAbility1State()
         {
             return PlayerState == PlayerState.Ability1;
         }
 
+        // Transition to Ability 2
         private bool TransitionToAbility2State()
         {
             return PlayerState == PlayerState.Ability2;
         }
 
+        // Transition to Ability 3
         private bool TransitionToAbility3State() 
         { 
             return PlayerState == PlayerState.Ability3;
         }
 
+        // Transition to Basic Attack
         private bool TransitionToBasicAttackState()
         {
             return PlayerState == PlayerState.Attacking;
         }
 
+        // Transition to Death State
+        private bool TransitionToDeathState()
+        {
+            return PlayerState == PlayerState.Death;
+        }
+
+        // Checks if the player can input movement again
         private bool CanMove()
         {
             return PlayerState == PlayerState.Idle || PlayerState == PlayerState.Moving;
         }
 
+        // Ensures that one attack/skill is casted at a time
         private bool CanAttackOrUseAbility()
         {
             return PlayerState != PlayerState.Attacking && PlayerState != PlayerState.Ability1 && PlayerState != PlayerState.Ability2 && PlayerState != PlayerState.Ability3;
@@ -176,6 +198,7 @@ namespace NF.Main.Gameplay.PlayerInput
             }
         }
 
+        // Ability activation logic
         private void OnActivateAbility1()
         {
             bool isAbility1Usable = _playerCharacter.Abilities[0].CooldownTracker.CanUseAbility();
@@ -198,6 +221,7 @@ namespace NF.Main.Gameplay.PlayerInput
 
         }
 
+        // Ability activation logic
         private void OnActivateAbility2()
         {
             bool isAbility2Usable = _playerCharacter.Abilities[1].CooldownTracker.CanUseAbility();
@@ -219,6 +243,7 @@ namespace NF.Main.Gameplay.PlayerInput
             }
         }
 
+        // Ability activation logic
         private void OnActivateAbility3()
         {
             bool isAbility3Usable = _playerCharacter.Abilities[2].CooldownTracker.CanUseAbility();
@@ -238,6 +263,12 @@ namespace NF.Main.Gameplay.PlayerInput
             {
                 Debug.Log("Ability 3 currently in cooldown");
             }
+        }
+
+        // Method called when invoking/calling the on death action
+        private void OnEnterDeath()
+        {
+            PlayerState = PlayerState.Death;
         }
     }
 }
