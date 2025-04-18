@@ -51,6 +51,7 @@ namespace NF.Main.Gameplay.EnemyAI
         public override void OnSubscriptionSet()
         {
             base.OnSubscriptionSet();
+            AddEvent(_enemyCharacter.OnDeath, _ => OnEnterDeath());
         }
 
         private void SetupStateMachine()
@@ -62,12 +63,14 @@ namespace NF.Main.Gameplay.EnemyAI
             var idleState = new EnemyIdleState(this, _animator);
             var movingState = new EnemyMovingState(this, _animator);
             var attackingState = new EnemyBasicAttackState(this, _animator);
+            var deathState = new EnemyDeathState(this, _animator);
 
             // Define enemy state transitions here
-            // Any(idleState, new FuncPredicate(ReturnToIdleState));
             Any(movingState, new FuncPredicate(TransitionToMovingState));
             At(movingState, attackingState, new FuncPredicate(TransitionToAttackState));
             At(attackingState, idleState, new FuncPredicate(TransitionToIdleState));
+
+            Any(deathState, new FuncPredicate(TransitionToDeathState));
 
             // Set initial state here
             _stateMachine.SetState(movingState);
@@ -89,6 +92,18 @@ namespace NF.Main.Gameplay.EnemyAI
         private bool TransitionToAttackState()
         {
             return EnemyState == EnemyState.Attacking;
+        }
+
+        // Func predicate for transitioning to death state.
+        private bool TransitionToDeathState()
+        {
+            return EnemyState == EnemyState.Death;
+        }
+
+        // Method called when invoking the on death event.
+        private void OnEnterDeath()
+        {
+            EnemyState = EnemyState.Death;
         }
 
         private void At(IState from, IState to, IPredicate condition) => _stateMachine.AddTransition(from, to, condition);
