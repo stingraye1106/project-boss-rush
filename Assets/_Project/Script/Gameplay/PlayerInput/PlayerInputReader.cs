@@ -6,13 +6,14 @@ using UnityEngine.InputSystem;
 using static InputSystem_Actions;
 
 [CreateAssetMenu(fileName = "PlayerInputReader", menuName = "ScriptableObject/Player/InputReader")]
-public class PlayerInputReader : SerializedScriptableObject, IPlayerActions, IUIActions
+public class PlayerInputReader : SerializedScriptableObject, IPlayerActions, IUIActions, IGlobalActions
 {
     public Subject<Vector2> Movement;
     public Subject<Unit> Attack;
     public Subject<Unit> PlayerAbility1;
     public Subject<Unit> PlayerAbility2;
     public Subject<Unit> PlayerAbility3;
+    public Subject<Unit> PauseTrigger;
     
     
     private InputSystem_Actions _inputActions;
@@ -30,12 +31,14 @@ public class PlayerInputReader : SerializedScriptableObject, IPlayerActions, IUI
         _inputActions = new InputSystem_Actions();
         _inputActions.Player.SetCallbacks(this);
         _inputActions.UI.SetCallbacks(this);
+        _inputActions.Global.SetCallbacks(this);
 
         Movement = new Subject<Vector2>();
         Attack = new Subject<Unit>();
         PlayerAbility1 = new Subject<Unit>();
         PlayerAbility2 = new Subject<Unit>();
         PlayerAbility3 = new Subject<Unit>();
+        PauseTrigger = new Subject<Unit>();
     }
     
     public void EnablePlayerActions() 
@@ -43,6 +46,17 @@ public class PlayerInputReader : SerializedScriptableObject, IPlayerActions, IUI
         _inputActions.Enable();
         _inputActions.Player.Enable();
         _inputActions.UI.Enable();
+        _inputActions.Global.Enable();
+    }
+
+    public void EnablePlayerActionMap()
+    {
+        _inputActions.Player.Enable();
+    }
+
+    public void DisablePlayerActionMap()
+    {
+        _inputActions.Player.Disable();
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -151,6 +165,10 @@ public class PlayerInputReader : SerializedScriptableObject, IPlayerActions, IUI
     }
 
     public void OnPause(InputAction.CallbackContext context) 
-    { 
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            PauseTrigger.OnNext(UniRx.Unit.Default);
+        }
     }
 }
