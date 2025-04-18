@@ -49,8 +49,8 @@ namespace NF.Main.Gameplay
             // Declare states
             var pausedState = new GamePausedState(this, GameState.Paused, _inputReader);
             var playingState = new GamePlayingState(this, GameState.Playing, _inputReader);
-            var gameOverState = new GameOverState(this, GameState.GameOver);
-            var victoryState = new GameVictoryState(this, GameState.Victory);
+            var gameOverState = new GameOverState(this, GameState.GameOver, _inputReader, _playerCharacter, _enemyCharacter);
+            var victoryState = new GameVictoryState(this, GameState.Victory, _inputReader, _playerCharacter, _enemyCharacter);
 
 
             // Define transitions
