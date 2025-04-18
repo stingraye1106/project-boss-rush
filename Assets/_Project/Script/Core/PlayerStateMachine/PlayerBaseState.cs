@@ -9,7 +9,7 @@ namespace NF.Main.Core.PlayerStateMachine
         protected readonly Animator _animator;
 
         protected static readonly int IdleHash = Animator.StringToHash("Idle");
-        protected static readonly int AttackHash = Animator.StringToHash("Attack");
+        protected static readonly int AttackHash = Animator.StringToHash("Basic Attack");
         protected static readonly int HitHash = Animator.StringToHash("Hit");
         protected static readonly int DeathHash = Animator.StringToHash("Death");
         protected static readonly int MovingHash = Animator.StringToHash("Moving");

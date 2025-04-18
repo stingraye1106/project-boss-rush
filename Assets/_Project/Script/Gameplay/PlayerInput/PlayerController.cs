@@ -67,6 +67,7 @@ namespace NF.Main.Gameplay.PlayerInput
             // Declare Player States
             var idleState = new PlayerIdleState(this, _animator);
             var movingState = new PlayerMovingState(this, _animator);
+            var basicAttackState = new PlayerBasicAttackState(this, _animator);
             var ability1State = new PlayerAbility1State(this, _animator);
             var ability2State = new PlayerAbility2State(this, _animator);
             var ability3State = new PlayerAbility3State(this, _animator);
@@ -74,6 +75,8 @@ namespace NF.Main.Gameplay.PlayerInput
             // Define Player State Transitions
             Any(idleState, new FuncPredicate(ReturnToIdleState));
             At(idleState, movingState, new FuncPredicate(TransitionToMovingState));
+            At(idleState, basicAttackState, new FuncPredicate(TransitionToBasicAttackState));
+            At(movingState, basicAttackState, new FuncPredicate(TransitionToBasicAttackState));
             At(idleState, ability1State, new FuncPredicate(TransitionToAbility1State));
             At(movingState, ability1State, new FuncPredicate(TransitionToAbility1State));
             At(idleState, ability2State, new FuncPredicate(TransitionToAbility2State));
@@ -115,20 +118,41 @@ namespace NF.Main.Gameplay.PlayerInput
             return PlayerState == PlayerState.Ability3;
         }
 
+        private bool TransitionToBasicAttackState()
+        {
+            return PlayerState == PlayerState.Attacking;
+        }
+
         private bool CanMove()
         {
             return PlayerState == PlayerState.Idle || PlayerState == PlayerState.Moving;
         }
 
-        private bool CanUseAbility()
+        private bool CanAttackOrUseAbility()
         {
-            return PlayerState != PlayerState.Ability1 && PlayerState != PlayerState.Ability2 && PlayerState != PlayerState.Ability3;
+            return PlayerState != PlayerState.Attacking && PlayerState != PlayerState.Ability1 && PlayerState != PlayerState.Ability2 && PlayerState != PlayerState.Ability3;
         }
         
         //Method that handles logic when the attack button is pressed
         private void OnAttack()
         {
-            Debug.Log($"Attack Performed");
+            bool isBasicAttackUsable = _playerCharacter.BasicAttackAbility.CooldownTracker.CanUseAbility();
+            if (isBasicAttackUsable)
+            {
+                if (CanAttackOrUseAbility())
+                {
+                    _playerCharacter.StopMovement();
+
+                    PlayerState = PlayerState.Attacking;
+                }
+                else
+                {
+                    Debug.Log("Ability/attack ongoing");
+                }
+            } else
+            {
+                Debug.Log("Basic attack on cooldown");
+            }
         }
         
         //Player movement logic is handled here
@@ -154,44 +178,66 @@ namespace NF.Main.Gameplay.PlayerInput
 
         private void OnActivateAbility1()
         {
-            if (CanUseAbility())
+            bool isAbility1Usable = _playerCharacter.Abilities[0].CooldownTracker.CanUseAbility();
+            if (isAbility1Usable)
             {
-                _playerCharacter.StopMovement();
+                if (CanAttackOrUseAbility())
+                {
+                    _playerCharacter.StopMovement();
 
-                PlayerState = PlayerState.Ability1;
+                    PlayerState = PlayerState.Ability1;
+                }
+                else
+                {
+                    Debug.Log("Ability/attack ongoing");
+                }
             } else
             {
-                Debug.Log("Ability/attack ongoing");
+                Debug.Log("Ability 1 currently in cooldown");
             }
 
         }
 
         private void OnActivateAbility2()
         {
-            if (CanUseAbility())
+            bool isAbility2Usable = _playerCharacter.Abilities[1].CooldownTracker.CanUseAbility();
+            if (isAbility2Usable)
             {
-                _playerCharacter.StopMovement();
+                if (CanAttackOrUseAbility())
+                {
+                    _playerCharacter.StopMovement();
 
-                PlayerState = PlayerState.Ability2;
+                    PlayerState = PlayerState.Ability2;
+                }
+                else
+                {
+                    Debug.Log("Ability/attack ongoing");
+                }
             } else
             {
-                Debug.Log("Ability/attack ongoing");
+                Debug.Log("Ability 2 currently in cooldown");
             }
-
         }
 
         private void OnActivateAbility3()
         {
-            if (CanUseAbility())
+            bool isAbility3Usable = _playerCharacter.Abilities[2].CooldownTracker.CanUseAbility();
+            if (isAbility3Usable)
             {
-                _playerCharacter.StopMovement();
+                if (CanAttackOrUseAbility())
+                {
+                    _playerCharacter.StopMovement();
 
-                PlayerState = PlayerState.Ability3;
+                    PlayerState = PlayerState.Ability3;
+                }
+                else
+                {
+                    Debug.Log("Ability/attack ongoing");
+                }
             } else
             {
-                Debug.Log("Ability/attack ongoing");
+                Debug.Log("Ability 3 currently in cooldown");
             }
-
         }
     }
 }
