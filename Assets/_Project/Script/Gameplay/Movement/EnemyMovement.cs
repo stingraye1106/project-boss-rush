@@ -13,7 +13,9 @@ namespace NF.Main.Gameplay.Movement
 
         private float _speed;
         private Vector3 _direction;
-
+        private float _destUpdateInterval = 0.1f;
+        private float _intervalTimer = 0f;
+        private NavMeshPath _path;
 
         public float Speed { get => _speed; set => _speed = value; }
         public float SpeedMultiplier { get => _speedMultiplier; set => _speedMultiplier = value; }
@@ -22,6 +24,16 @@ namespace NF.Main.Gameplay.Movement
 
 
 
+
+        private void Awake()
+        {
+            _path = new NavMeshPath();
+        }
+
+        private void OnDisable()
+        {
+            _intervalTimer = 0f;
+        }
 
         public override void Initialize(object data = null)
         {
@@ -38,12 +50,7 @@ namespace NF.Main.Gameplay.Movement
             {
                 StartMovement();
             }
-            SetDestination();
-
-            if  (_navMeshAgent.isStopped)
-            {
-                Debug.Log("stopped");
-            }
+            RecalculatePath();
         }
 
         private void StartMovement()
@@ -59,6 +66,19 @@ namespace NF.Main.Gameplay.Movement
         private void SetDestination()
         {
             _navMeshAgent.SetDestination(_direction);
+        }
+
+        private void RecalculatePath()
+        {
+            _intervalTimer -= Time.deltaTime;
+
+            if (_intervalTimer <= 0f)
+            {
+                NavMesh.CalculatePath(_navMeshAgent.transform.position, _direction, NavMesh.AllAreas, _path);
+                _navMeshAgent.SetPath(_path);
+
+                _intervalTimer = _destUpdateInterval;
+            }
         }
 
         private void UpdateMovementSpeed()

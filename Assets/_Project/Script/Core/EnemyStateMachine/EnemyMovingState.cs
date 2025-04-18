@@ -13,16 +13,24 @@ namespace NF.Main.Core.EnemyStateMachine
         {
             base.OnEnter();
             _animator.CrossFade(MovingHash, 0.25f);
+            _enemyController.EnemyCharacter.Move(_enemyController.ChaseTarget.position);
         }
 
         public override void Update()
         {
             base.Update();
+            float distanceFromPlayer = Vector3.Distance(_enemyController.EnemyCharacter.transform.position, _enemyController.ChaseTarget.position);
+            bool isWithinAttackRange = distanceFromPlayer <= _enemyController.EnemyCharacter.AttackRange;
+            if (isWithinAttackRange)
+            {
+                _enemyController.EnemyState = EnemyState.Attacking;
+            }
         }
 
         public override void OnExit()
         {
             base.OnExit();
+            _enemyController.EnemyCharacter.StopMovement();
         }
     }
 }

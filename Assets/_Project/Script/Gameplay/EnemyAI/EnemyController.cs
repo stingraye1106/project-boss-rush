@@ -10,11 +10,17 @@ namespace NF.Main.Gameplay.EnemyAI
     {
         [TabGroup("References")][SerializeField] private Animator _animator;
         [TabGroup("References")][SerializeField] private EnemyCharacter _enemyCharacter;
-        [TabGroup("References")][SerializeField] private EnemyBrain _enemyBrain;
-        [TabGroup("References")][SerializeField] private Transform _chaseTarget;
+
+        [TabGroup("Chase Settings")][SerializeField] private Transform _chaseTarget;
+
+        [TabGroup("Idle Settings")][SerializeField] private float _idleTime;
+
 
         private StateMachine _stateMachine;
         public EnemyState EnemyState { get; set; }
+        public EnemyCharacter EnemyCharacter => _enemyCharacter;
+        public Transform ChaseTarget => _chaseTarget;
+        public float IdleTime => _idleTime;
 
         private void Start()
         {
@@ -45,7 +51,6 @@ namespace NF.Main.Gameplay.EnemyAI
         public override void OnSubscriptionSet()
         {
             base.OnSubscriptionSet();
-            AddEvent(_enemyBrain.MoveTrigger, OnEnemyMove);
         }
 
         private void SetupStateMachine()
@@ -56,40 +61,34 @@ namespace NF.Main.Gameplay.EnemyAI
             // Declare enemy states here
             var idleState = new EnemyIdleState(this, _animator);
             var movingState = new EnemyMovingState(this, _animator);
+            var attackingState = new EnemyBasicAttackState(this, _animator);
 
             // Define enemy state transitions here
-            Any(idleState, new FuncPredicate(ReturnToIdleState));
-            At(idleState, movingState, new FuncPredicate(TransitionToMovingState));
+            // Any(idleState, new FuncPredicate(ReturnToIdleState));
+            Any(movingState, new FuncPredicate(TransitionToMovingState));
+            At(movingState, attackingState, new FuncPredicate(TransitionToAttackState));
+            At(attackingState, idleState, new FuncPredicate(TransitionToIdleState));
 
             // Set initial state here
-            _stateMachine.SetState(idleState);
+            _stateMachine.SetState(movingState);
         }
 
-        // Function to check if we should move to idle.
-        private bool ReturnToIdleState()
+        // Function to check if enemy should move to idle.
+        private bool TransitionToIdleState()
         {
             return EnemyState == EnemyState.Idle;
         }
 
-        // Function to check if we should move to the moving state.
+        // Function to check if enemy should move to the moving state.
         private bool TransitionToMovingState()
         {
             return EnemyState == EnemyState.Moving;
         }
 
-        private void OnEnemyMove(bool canMove)
+        // Function to check if enemy should perform an ability or attack.
+        private bool TransitionToAttackState()
         {
-            Debug.Log("Hello there");
-            if (canMove)
-            {
-                EnemyState = EnemyState.Moving;
-                _enemyCharacter.Move(_chaseTarget.position);
-            } else
-            {
-                EnemyState = EnemyState.Idle;
-                _enemyCharacter.StopMovement();
-            }
-                
+            return EnemyState == EnemyState.Attacking;
         }
 
         private void At(IState from, IState to, IPredicate condition) => _stateMachine.AddTransition(from, to, condition);
