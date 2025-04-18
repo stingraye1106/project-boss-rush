@@ -19,7 +19,8 @@ namespace NF.Main.Gameplay.Character
         [TabGroup("Stats")][SerializeField] protected SpeedStat _speed;
 
         // Ability list
-        [SerializeField] protected List<Ability> _abilities;
+        [TabGroup("Abilities")][SerializeField] protected Ability _basicAttackAbility;
+        [TabGroup("Abilities")][SerializeField] protected List<Ability> _abilities;
 
         // Movement logic
         protected IMovement _movement;
@@ -28,6 +29,7 @@ namespace NF.Main.Gameplay.Character
         public HealthStat Health => _health;
         public AttackPowerStat AttackPower => _attackPower;
         public SpeedStat Speed => _speed;
+        public Ability BasicAttackAbility => _basicAttackAbility;
         public List<Ability> Abilities => _abilities;
 
 

@@ -6,7 +6,7 @@ namespace NF.Main.Gameplay.Character
     {
         public override void Attack()
         {
-            throw new System.NotImplementedException();
+            _basicAttackAbility.Use(gameObject);
         }
 
         public override void Move(Vector3 direction)

@@ -1,17 +1,17 @@
-using Sirenix.OdinInspector;
-using UniRx;
 using UnityEngine;
 
 namespace NF.Main.Gameplay.Character
 {
     public class EnemyCharacter : ACharacter
     {
+        [SerializeField] private float _attackRange;
+
         public Transform ChaseTarget { get; set; }
+        public float AttackRange => _attackRange;
 
         public override void Initialize(object data = null)
         {
             base.Initialize(data);
-            // Move(_chaseTarget.position);
         }
 
         private void Update()
@@ -21,7 +21,7 @@ namespace NF.Main.Gameplay.Character
 
         public override void Attack()
         {
-            throw new System.NotImplementedException();
+            _basicAttackAbility.Use(gameObject);
         }
 
         public override void Move(Vector3 direction)
