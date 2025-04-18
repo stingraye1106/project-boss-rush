@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8adc1ef41cc24c84a895d2d085547d2d, type: 3}
+  m_Name: Ability_SpinAttack
+  m_EditorClassIdentifier: 
+  _uniqueId: 2_p
+  _behaviourReference: {fileID: 11400000, guid: 86011b8360082e54ab8b2bc3fc746e69, type: 2}
+  _cooldown: {fileID: 11400000, guid: 8056379d658788d4caabeadb1e53c473, type: 2}

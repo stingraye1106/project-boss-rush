@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8adc1ef41cc24c84a895d2d085547d2d, type: 3}
-  m_Name: Ability_SpinAttack
+  m_Script: {fileID: 11500000, guid: cb743f86bc03b7748ad67422d7d147ad, type: 3}
+  m_Name: Cooldown_PlayerBasicAttack
   m_EditorClassIdentifier: 
-  _uniqueId: 2
-  _behaviourReference: {fileID: 11400000, guid: 86011b8360082e54ab8b2bc3fc746e69, type: 2}
-  _cooldown: {fileID: 11400000, guid: 8056379d658788d4caabeadb1e53c473, type: 2}
+  _defaultValue: 1.5
