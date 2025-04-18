@@ -4,19 +4,29 @@ namespace NF.Main.Gameplay.Character
 {
     public class EnemyCharacter : ACharacter
     {
-        protected override void Awake()
+        [SerializeField] private float _attackRange;
+
+        public Transform ChaseTarget { get; set; }
+        public float AttackRange => _attackRange;
+
+        public override void Initialize(object data = null)
         {
-            _health.CurrentValue = _health.DefaultValue;
+            base.Initialize(data);
+        }
+
+        private void Update()
+        {
+            _movement.Direction = ChaseTarget.position;
         }
 
         public override void Attack()
         {
-            throw new System.NotImplementedException();
+            _basicAttackAbility.Use(gameObject);
         }
 
         public override void Move(Vector3 direction)
         {
-            throw new System.NotImplementedException();
+            _movement.CanMove = true;
         }
 
         public override void TakeDamage(float damage)
@@ -27,7 +37,7 @@ namespace NF.Main.Gameplay.Character
 
         public override void StopMovement()
         {
-            throw new System.NotImplementedException();
+            _movement.CanMove = false;
         }
     }
 }

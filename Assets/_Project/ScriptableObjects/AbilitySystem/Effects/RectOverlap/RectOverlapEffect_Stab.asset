@@ -16,7 +16,7 @@ MonoBehaviour:
   _height: {fileID: 11400000, guid: ef661712a72b0e84c848138a734f9cc1, type: 2}
   _depth: {fileID: 11400000, guid: 204301bd76669264c8212884eb2c4426, type: 2}
   _effects:
-  - {fileID: 11400000, guid: a7b18278c260e9549a96da5c15b38617, type: 2}
+  - {fileID: 11400000, guid: 2091e86bc68cbe646a2e8f508be00ccd, type: 2}
   _layerMask:
     serializedVersion: 2
     m_Bits: 8

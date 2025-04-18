@@ -7,5 +7,6 @@ namespace NF.Main.Gameplay.Movement
         float Speed { get; set; }
         float SpeedMultiplier { get; set; }
         Vector3 Direction { get; set; }
+        bool CanMove { get; set; }
     }
 }

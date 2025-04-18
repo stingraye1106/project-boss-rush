@@ -21,7 +21,7 @@ namespace NF.Main.Gameplay.AbilitySystem.Effects
         {
             var boxExtents = new Vector3(width, height, depth);
             var offset = Vector3.forward * _offset;
-            return Physics.OverlapBox(centerPos + offset, boxExtents / 2, rotation, _layerMask);
+            return Physics.OverlapBox(centerPos + offset, boxExtents, rotation, _layerMask);
         }
 
 

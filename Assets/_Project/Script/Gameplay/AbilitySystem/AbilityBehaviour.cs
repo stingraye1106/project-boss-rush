@@ -8,18 +8,34 @@ namespace NF.Main.Gameplay.AbilitySystem
     public class AbilityBehaviour : ScriptableObject
     {
         [SerializeField] private List<AbilityPhase> _abilityPhases;
+        private bool _isDone;
 
         public List<AbilityPhase> AbilityPhases => _abilityPhases;
+        public bool IsDone => _isDone;
 
 
 
-        private void ResetPhases()
+        private void ResetBehaviour()
         {
             foreach (var phase in _abilityPhases) 
             {
                 phase.Reset(); 
             }
-            Debug.Log("Phases reset.");
+
+            _isDone = false;
+        }
+
+        private bool ArePhasesDone()
+        {
+            foreach (var phase in _abilityPhases)
+            {
+                if (!phase.IsDone)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private IEnumerator RunPhases(GameObject source)
@@ -28,11 +44,16 @@ namespace NF.Main.Gameplay.AbilitySystem
             {
                 yield return phase.TriggerPhase(source);
             }
+
+            if (ArePhasesDone())
+            {
+                _isDone = true;
+            }
         }
 
         public void TriggerBehaviour(GameObject source)
         {
-            ResetPhases();
+            ResetBehaviour();
             source.GetComponent<MonoBehaviour>().StartCoroutine(RunPhases(source));
         }
     }

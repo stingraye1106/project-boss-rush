@@ -1,5 +1,4 @@
 using NF.Main.Gameplay.Stats;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace NF.Main.Gameplay.AbilitySystem
@@ -10,30 +9,31 @@ namespace NF.Main.Gameplay.AbilitySystem
         [SerializeField] private string _uniqueId;
         [SerializeField] private AbilityBehaviour _behaviourReference;
         [SerializeField] private Stat _cooldown;
-        private float _remainingCooldown;
+        private CooldownTracker _cooldownTracker;
 
         public string UniqueId => _uniqueId;
-        public AbilityBehaviour BehaviourReference => _behaviourReference;
         public Stat Cooldown => _cooldown;
-        [ShowInInspector, ReadOnly] public float RemainingCooldown { get { return _remainingCooldown; } set { _remainingCooldown = value; } }
+        public CooldownTracker CooldownTracker { get => _cooldownTracker; set => _cooldownTracker = value; } 
 
 
 
-        public bool CanUse()
+
+        private void OnEnable()
         {
-            return _remainingCooldown == 0f;
+            _cooldownTracker = new CooldownTracker(this);
+            _cooldownTracker.ResetTracker();
         }
 
-        public void ResetCooldown()
+        public bool IsAbilityBehaviourDone()
         {
-            _remainingCooldown = 0f;
+            return _behaviourReference.IsDone;
         }
 
         public void Use(GameObject source)
         {
-            Debug.Log($"Used ability!");
-            if (CanUse())
+            if (_cooldownTracker.CanUseAbility())
             {
+                _cooldownTracker.EnterCooldown();
                 _behaviourReference.TriggerBehaviour(source);
             }
         }
