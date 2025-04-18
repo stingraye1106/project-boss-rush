@@ -149,4 +149,8 @@ public class PlayerInputReader : SerializedScriptableObject, IPlayerActions, IUI
             PlayerAbility3.OnNext(UniRx.Unit.Default);
         }
     }
+
+    public void OnPause(InputAction.CallbackContext context) 
+    { 
+    }
 }
