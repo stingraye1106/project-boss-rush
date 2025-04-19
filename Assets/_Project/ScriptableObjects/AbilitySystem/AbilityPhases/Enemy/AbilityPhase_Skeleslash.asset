@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _duration: {fileID: 11400000, guid: 76c3c7c1289b3b648982340500732567, type: 2}
   _effectsList:
-  - NormalizedTime: 0.6
+  - NormalizedTime: 0.75
     Effect:
     - {fileID: 11400000, guid: dfe4d43a8ca7696419d06a4f5fb7ebe1, type: 2}
-  - NormalizedTime: 0.75
+  - NormalizedTime: 0.9
     Effect:
     - {fileID: 11400000, guid: c19a154bb47375f4f8ddcea10ea6cf22, type: 2}
