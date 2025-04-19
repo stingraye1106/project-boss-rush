@@ -19,7 +19,7 @@ namespace NF.Main.Core.EnemyStateMachine
             _enemyController.EnemyCharacter.Attack();
         }
 
-        // Logic when player is currently in moving state
+        // Logic when player is currently in basic attack state
         public override void Update()
         {
             base.Update();
@@ -31,7 +31,7 @@ namespace NF.Main.Core.EnemyStateMachine
             }
         }
 
-        // Logic when player exits the moving state
+        // Logic when player exits the basic attack state
         public override void OnExit()
         {
             base.OnExit();

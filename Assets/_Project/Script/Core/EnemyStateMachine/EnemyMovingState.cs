@@ -23,7 +23,7 @@ namespace NF.Main.Core.EnemyStateMachine
             bool isWithinAttackRange = distanceFromPlayer <= _enemyController.EnemyCharacter.AttackRange;
             if (isWithinAttackRange)
             {
-                _enemyController.EnemyState = EnemyState.Attacking;
+                _enemyController.EnemyState = EnemyState.Decide;
             }
         }
 

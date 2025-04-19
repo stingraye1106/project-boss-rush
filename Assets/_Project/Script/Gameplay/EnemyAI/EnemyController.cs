@@ -2,7 +2,6 @@ using NF.Main.Core;
 using NF.Main.Core.EnemyStateMachine;
 using NF.Main.Gameplay.Character;
 using Sirenix.OdinInspector;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 namespace NF.Main.Gameplay.EnemyAI
@@ -68,11 +67,19 @@ namespace NF.Main.Gameplay.EnemyAI
             var attackingState = new EnemyBasicAttackState(this, _animator);
             var deathState = new EnemyDeathState(this, _animator);
             var hitState = new EnemyHitState(this, _animator, _hitStateDuration);
+            var decideState = new EnemyDecideState(this, _animator);
+            var ability1State = new EnemyAbility1State(this, _animator);
+            var ability2State = new EnemyAbility2State(this, _animator);
+            var ability3State = new EnemyAbility3State(this, _animator);
 
             // Define enemy state transitions here
             Any(movingState, new FuncPredicate(TransitionToMovingState));
-            At(movingState, attackingState, new FuncPredicate(TransitionToAttackState));
-            At(attackingState, idleState, new FuncPredicate(TransitionToIdleState));
+            At(movingState, decideState, new FuncPredicate(TransitionToDecideState));
+            At(decideState, attackingState, new FuncPredicate(TransitionToAttackState));
+            At(decideState, ability1State, new FuncPredicate(TransitionToAbility1State));
+            At(decideState, ability2State, new FuncPredicate(TransitionToAbility2State));
+            At(decideState, ability3State, new FuncPredicate(TransitionToAbility3State));
+            Any(idleState, new FuncPredicate(TransitionToIdleState));
 
             // Transitions when being hit / killed
             Any(deathState, new FuncPredicate(TransitionToDeathState));
@@ -110,6 +117,30 @@ namespace NF.Main.Gameplay.EnemyAI
         private bool TransitionToHitState()
         {
             return EnemyState == EnemyState.Hit;
+        }
+
+        // Func predicate for transitioning to decision state.
+        private bool TransitionToDecideState()
+        {
+            return EnemyState == EnemyState.Decide;
+        }
+
+        // Func predicate for transitioning to ability 1 state.
+        private bool TransitionToAbility1State()
+        {
+            return EnemyState == EnemyState.Ability1;
+        }
+
+        // Func predicate for transitioning to ability 1 state.
+        private bool TransitionToAbility2State()
+        {
+            return EnemyState == EnemyState.Ability2;
+        }
+
+        // Func predicate for transitioning to ability 1 state.
+        private bool TransitionToAbility3State()
+        {
+            return EnemyState == EnemyState.Ability3;
         }
 
         // Method called when invoking the on death event.
