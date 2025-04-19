@@ -1421,8 +1421,8 @@ Camera:
   m_GameObject: {fileID: 330585543}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.081568174, g: 0.09623722, b: 0.122641504, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -4178,6 +4178,9 @@ MonoBehaviour:
   _victoryScreen: {fileID: 732587457}
   _gameOverScreen: {fileID: 1808313755}
   _resumeButton: {fileID: 1777518640}
+  _retryButton: {fileID: 1684120858}
+  _retryOnWinButton: {fileID: 1680195591}
+  _retryOnLoseButton: {fileID: 882542103}
 --- !u!1 &1059470912
 GameObject:
   m_ObjectHideFlags: 0
@@ -4472,7 +4475,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Restart
+  m_text: Retry
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c929e6d99a6a47d41a1d188c9447f0b6, type: 2}
   m_sharedMaterial: {fileID: 3128926098380695189, guid: c929e6d99a6a47d41a1d188c9447f0b6, type: 2}
@@ -5590,7 +5593,7 @@ GameObject:
   - component: {fileID: 1680195592}
   - component: {fileID: 1680195591}
   m_Layer: 5
-  m_Name: UI_RestartButton
+  m_Name: UI_RetryButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5744,7 +5747,7 @@ GameObject:
   - component: {fileID: 1684120859}
   - component: {fileID: 1684120858}
   m_Layer: 5
-  m_Name: UI_RestartButton
+  m_Name: UI_RetryButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

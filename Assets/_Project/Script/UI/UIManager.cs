@@ -2,6 +2,7 @@ using NF.Main.Core;
 using NF.Main.Gameplay;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace NF.Main.UI
@@ -14,6 +15,11 @@ namespace NF.Main.UI
         [TabGroup("UI Screens")][SerializeField] private GameObject _gameOverScreen;
 
         [TabGroup("Pause Menu")][SerializeField] private Button _resumeButton;
+        [TabGroup("Pause Menu")][SerializeField] private Button _retryButton;
+
+        [TabGroup("Game Victory Screen")][SerializeField] private Button _retryOnWinButton;
+
+        [TabGroup("Game Over Screen")][SerializeField] private Button _retryOnLoseButton;
 
         private void Awake()
         {
@@ -30,6 +36,9 @@ namespace NF.Main.UI
         private void InitializeButtons()
         {
             _resumeButton?.onClick.AddListener(GameManager.Instance.OnPauseButtonPress);
+            _retryButton?.onClick.AddListener(RestartScene);
+            _retryOnWinButton?.onClick.AddListener(RestartScene);
+            _retryOnLoseButton?.onClick.AddListener(RestartScene);
         }
 
         private void InitializeScreens()
@@ -43,6 +52,9 @@ namespace NF.Main.UI
         private void OnDisable()
         {
             _resumeButton?.onClick.RemoveAllListeners();
+            _retryButton?.onClick.RemoveAllListeners();
+            _retryOnWinButton?.onClick?.RemoveAllListeners();
+            _retryOnLoseButton?.onClick?.RemoveAllListeners();
         }
 
         public void ShowPauseScreen()
@@ -83,6 +95,11 @@ namespace NF.Main.UI
         public void HideGameOverScreen()
         {
             _gameOverScreen.SetActive(false);
+        }
+
+        public void RestartScene()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }
