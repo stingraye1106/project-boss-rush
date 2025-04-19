@@ -2,6 +2,7 @@ using NF.Main.Core;
 using NF.Main.Core.EnemyStateMachine;
 using NF.Main.Gameplay.Character;
 using Sirenix.OdinInspector;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 namespace NF.Main.Gameplay.EnemyAI
@@ -15,12 +16,13 @@ namespace NF.Main.Gameplay.EnemyAI
 
         [TabGroup("Idle Settings")][SerializeField] private float _idleTime;
 
+        [TabGroup("Hit State Settings")][SerializeField] private float _hitStateDuration;
+
 
         private StateMachine _stateMachine;
         public EnemyState EnemyState { get; set; }
         public EnemyCharacter EnemyCharacter => _enemyCharacter;
         public Transform ChaseTarget => _chaseTarget;
-        public float IdleTime => _idleTime;
 
         private void Start()
         {
@@ -52,6 +54,7 @@ namespace NF.Main.Gameplay.EnemyAI
         {
             base.OnSubscriptionSet();
             AddEvent(_enemyCharacter.OnDeath, _ => OnEnterDeath());
+            AddEvent(_enemyCharacter.OnHit, _ => OnEnterHit());
         }
 
         private void SetupStateMachine()
@@ -60,17 +63,20 @@ namespace NF.Main.Gameplay.EnemyAI
             _stateMachine = new StateMachine();
 
             // Declare enemy states here
-            var idleState = new EnemyIdleState(this, _animator);
+            var idleState = new EnemyIdleState(this, _animator, _idleTime);
             var movingState = new EnemyMovingState(this, _animator);
             var attackingState = new EnemyBasicAttackState(this, _animator);
             var deathState = new EnemyDeathState(this, _animator);
+            var hitState = new EnemyHitState(this, _animator, _hitStateDuration);
 
             // Define enemy state transitions here
             Any(movingState, new FuncPredicate(TransitionToMovingState));
             At(movingState, attackingState, new FuncPredicate(TransitionToAttackState));
             At(attackingState, idleState, new FuncPredicate(TransitionToIdleState));
 
+            // Transitions when being hit / killed
             Any(deathState, new FuncPredicate(TransitionToDeathState));
+            Any(hitState, new FuncPredicate(TransitionToHitState));
 
             // Set initial state here
             _stateMachine.SetState(movingState);
@@ -100,10 +106,22 @@ namespace NF.Main.Gameplay.EnemyAI
             return EnemyState == EnemyState.Death;
         }
 
+        // Func predicate for transitioning to hit state.
+        private bool TransitionToHitState()
+        {
+            return EnemyState == EnemyState.Hit;
+        }
+
         // Method called when invoking the on death event.
         private void OnEnterDeath()
         {
             EnemyState = EnemyState.Death;
+        }
+
+        // Method called when invoking the on hit event.
+        private void OnEnterHit()
+        {
+            EnemyState = EnemyState.Hit;
         }
 
         private void At(IState from, IState to, IPredicate condition) => _stateMachine.AddTransition(from, to, condition);

@@ -6,11 +6,13 @@ namespace NF.Main.Gameplay.Character
     public class PlayerCharacter : ACharacter
     {
         public Subject<Unit> OnDeath;
+        public Subject<Unit> OnHit;
 
         protected override void OnEnable()
         {
             base.OnEnable();
             OnDeath = new Subject<Unit>();
+            OnHit = new Subject<Unit>();
         }
 
         // Uses the basic attack ability.
@@ -38,6 +40,9 @@ namespace NF.Main.Gameplay.Character
 
                 // Set game state to Game Over.
                 GameManager.Instance.GameState = GameState.GameOver;
+            } else
+            {
+                OnHit.OnNext(Unit.Default);
             }
         }
 

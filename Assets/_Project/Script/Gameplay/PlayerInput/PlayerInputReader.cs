@@ -88,14 +88,6 @@ public class PlayerInputReader : SerializedScriptableObject, IPlayerActions, IUI
     {
     }
 
-    public void OnPrevious(InputAction.CallbackContext context)
-    {
-    }
-
-    public void OnNext(InputAction.CallbackContext context)
-    {
-    }
-
     public void OnSprint(InputAction.CallbackContext context)
     {
     }
