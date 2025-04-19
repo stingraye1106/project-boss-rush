@@ -2778,6 +2778,9 @@ MonoBehaviour:
     - Name: OnDeath
       Entry: 6
       Data: 
+    - Name: OnHit
+      Entry: 6
+      Data: 
   _characterType: {fileID: 11400000, guid: 3b8495814875a7f4a9324e8c3302c3c0, type: 2}
   _health: {fileID: 11400000, guid: 13ab296947dfbdb48be0fc3a4d708cb6, type: 2}
   _attackPower: {fileID: 11400000, guid: 4d80d1399e90e504ab493f449a93444c, type: 2}
@@ -5392,6 +5395,7 @@ MonoBehaviour:
   _playerInput: {fileID: 11400000, guid: 125647a59a10c43d2954bae7c01e0fdc, type: 2}
   _animator: {fileID: 365006546}
   _playerCharacter: {fileID: 533851805}
+  _hitStateDuration: 1.5
 --- !u!1 &1594400734
 GameObject:
   m_ObjectHideFlags: 0
@@ -5952,7 +5956,6 @@ GameObject:
   - component: {fileID: 1698168943}
   - component: {fileID: 1698168945}
   - component: {fileID: 1698168947}
-  - component: {fileID: 1698168948}
   - component: {fileID: 1698168941}
   - component: {fileID: 1698168944}
   - component: {fileID: 1698168946}
@@ -6051,6 +6054,9 @@ MonoBehaviour:
     - Name: OnDeath
       Entry: 6
       Data: 
+    - Name: OnHit
+      Entry: 6
+      Data: 
   _characterType: {fileID: 11400000, guid: eaabe409ec1ce914a806ba052830c81f, type: 2}
   _health: {fileID: 11400000, guid: 1995c237bc71fa24b962b9db12928e79, type: 2}
   _attackPower: {fileID: 11400000, guid: a623b1604cb484742b63a5089f974c00, type: 2}
@@ -6104,18 +6110,6 @@ MonoBehaviour:
   _navMeshAgent: {fileID: 1698168946}
   _canMove: 1
   _speedMultiplier: 1
---- !u!114 &1698168948
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1698168940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bedf7b2898442a74289de31abd7d8954, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1699905347
 GameObject:
   m_ObjectHideFlags: 0
@@ -6939,6 +6933,8 @@ MonoBehaviour:
   _enemyCharacter: {fileID: 1698168945}
   _chaseTarget: {fileID: 533851801}
   _idleTime: 1.5
+  _hitStateDuration: 1
+  _idleAfterHitDuration: 0.25
 --- !u!1 &1819847709
 GameObject:
   m_ObjectHideFlags: 0
