@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afc4136eeee643345a2e5eafa638ffa2, type: 3}
+  m_Name: AbilityPhase_Skelestab
+  m_EditorClassIdentifier: 
+  _duration: {fileID: 11400000, guid: 6063513d291432d4296caf90c94512bc, type: 2}
+  _effectsList:
+  - NormalizedTime: 0.25
+    Effect:
+    - {fileID: 11400000, guid: 5c64d7e78cae81543b00c3f6708295aa, type: 2}
