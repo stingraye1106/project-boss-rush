@@ -2,7 +2,6 @@ using NF.Main.Core;
 using NF.Main.Core.PlayerStateMachine;
 using NF.Main.Gameplay.Character;
 using Sirenix.OdinInspector;
-using Sirenix.OdinInspector.Editor.Validation;
 using UnityEngine;
 
 namespace NF.Main.Gameplay.PlayerInput
@@ -12,6 +11,8 @@ namespace NF.Main.Gameplay.PlayerInput
         [TabGroup("References")][SerializeField] private PlayerInputReader _playerInput;
         [TabGroup("References")][SerializeField] private Animator _animator;
         [TabGroup("References")][SerializeField] private PlayerCharacter _playerCharacter;
+
+        [TabGroup("Hit State Settings")][SerializeField] private float _hitStateDuration;
 
         private StateMachine _stateMachine;
         public PlayerState PlayerState { get; set; }
@@ -57,6 +58,7 @@ namespace NF.Main.Gameplay.PlayerInput
             AddEvent(_playerInput.PlayerAbility2, _ => OnActivateAbility2());
             AddEvent(_playerInput.PlayerAbility3, _ => OnActivateAbility3());
             AddEvent(_playerCharacter.OnDeath, _ => OnEnterDeath());
+            AddEvent(_playerCharacter.OnHit, _ => OnEnterHit());
         }
 
 
@@ -74,6 +76,7 @@ namespace NF.Main.Gameplay.PlayerInput
             var ability2State = new PlayerAbility2State(this, _animator);
             var ability3State = new PlayerAbility3State(this, _animator);
             var deathState = new PlayerDeathState(this, _animator);
+            var hitState = new PlayerHitState(this, _animator, _hitStateDuration, _playerInput);
 
             // Define Player State Transitions
             Any(idleState, new FuncPredicate(ReturnToIdleState));
@@ -81,8 +84,9 @@ namespace NF.Main.Gameplay.PlayerInput
             // Movement transitions
             At(idleState, movingState, new FuncPredicate(TransitionToMovingState));
 
-            // Death transitions
+            // Death/hit transitions
             Any(deathState, new FuncPredicate(TransitionToDeathState));
+            Any(hitState, new FuncPredicate(TransitionToHitState));
 
             // Attack / ability state transitions
             At(idleState, basicAttackState, new FuncPredicate(TransitionToBasicAttackState));
@@ -141,6 +145,11 @@ namespace NF.Main.Gameplay.PlayerInput
         private bool TransitionToDeathState()
         {
             return PlayerState == PlayerState.Death;
+        }
+
+        private bool TransitionToHitState() 
+        { 
+            return PlayerState == PlayerState.Hit;
         }
 
         // Checks if the player can input movement again
@@ -269,6 +278,12 @@ namespace NF.Main.Gameplay.PlayerInput
         private void OnEnterDeath()
         {
             PlayerState = PlayerState.Death;
+        }
+
+        // Method called when invoking/calling the on death action
+        private void OnEnterHit()
+        {
+            PlayerState = PlayerState.Hit;
         }
     }
 }
