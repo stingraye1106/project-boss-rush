@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb743f86bc03b7748ad67422d7d147ad, type: 3}
-  m_Name: DurationStat_Stab
+  m_Script: {fileID: 11500000, guid: 39de39d0a09a719479053ddd5faa4929, type: 3}
+  m_Name: AbilityBehaviour_Skelestab
   m_EditorClassIdentifier: 
-  _defaultValue: 1.25
+  _abilityPhases:
+  - {fileID: 11400000, guid: d12290fdf20c48c4fb2474716877dbf8, type: 2}

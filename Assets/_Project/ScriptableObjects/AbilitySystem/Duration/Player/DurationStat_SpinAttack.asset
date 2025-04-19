@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb743f86bc03b7748ad67422d7d147ad, type: 3}
   m_Name: DurationStat_SpinAttack
   m_EditorClassIdentifier: 
-  _defaultValue: 2.4
+  _defaultValue: 1.8

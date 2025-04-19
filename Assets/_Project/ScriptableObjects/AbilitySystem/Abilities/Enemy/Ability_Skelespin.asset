@@ -9,7 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb743f86bc03b7748ad67422d7d147ad, type: 3}
-  m_Name: DurationStat_Stab
+  m_Script: {fileID: 11500000, guid: 8adc1ef41cc24c84a895d2d085547d2d, type: 3}
+  m_Name: Ability_Skelespin
   m_EditorClassIdentifier: 
-  _defaultValue: 1.25
+  _uniqueId: 2_e
+  _behaviourReference: {fileID: 11400000, guid: 675c8bbeb9fc75d4681f2be2c28d45b9, type: 2}
+  _cooldown: {fileID: 11400000, guid: 66cca18da8eaf984296866f46b10106e, type: 2}

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: afc4136eeee643345a2e5eafa638ffa2, type: 3}
-  m_Name: AbilityPhase_SpinAttack
+  m_Name: AbilityPhase_Skelestab
   m_EditorClassIdentifier: 
-  _duration: {fileID: 11400000, guid: 8f0cabe9152f71a4aa9195da683ed8ce, type: 2}
+  _duration: {fileID: 11400000, guid: 6063513d291432d4296caf90c94512bc, type: 2}
   _effectsList:
-  - NormalizedTime: 0.4
+  - NormalizedTime: 0.25
     Effect:
-    - {fileID: 11400000, guid: 7ee2aa8d28d28a540bb386198cbd0b28, type: 2}
+    - {fileID: 11400000, guid: 5c64d7e78cae81543b00c3f6708295aa, type: 2}
