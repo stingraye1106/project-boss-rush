@@ -5,8 +5,12 @@ namespace NF.Main.Gameplay.Character
 {
     public class EnemyCharacter : ACharacter
     {
+        [Header("Enemy Character-Specific Fields")]
         [SerializeField] private float _attackRange;
+
+        [Header("Event Triggers")]
         public Subject<Unit> OnDeath;
+        public Subject<Unit> OnHit;
 
         public Transform ChaseTarget { get; set; }
         public float AttackRange => _attackRange;
@@ -15,6 +19,7 @@ namespace NF.Main.Gameplay.Character
         {
             base.OnEnable();
             OnDeath = new Subject<Unit>();
+            OnHit = new Subject<Unit>();
         }
 
         // Enemy will pursue the selected chase target.
@@ -48,6 +53,9 @@ namespace NF.Main.Gameplay.Character
 
                 // Set game state to victory.
                 GameManager.Instance.GameState = GameState.Victory;
+            } else
+            {
+                OnHit.OnNext(Unit.Default);
             }
         }
 

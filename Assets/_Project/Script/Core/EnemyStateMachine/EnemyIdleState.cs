@@ -6,9 +6,11 @@ namespace NF.Main.Core.EnemyStateMachine
     public class EnemyIdleState : EnemyBaseState
     {
         private float _timer;
+        private float _idleTime;
 
-        public EnemyIdleState(EnemyController enemyController, Animator animator) : base(enemyController, animator)
+        public EnemyIdleState(EnemyController enemyController, Animator animator, float idleTime) : base(enemyController, animator)
         {
+            _idleTime = idleTime;
         }
 
         public override void OnEnter()
@@ -23,7 +25,7 @@ namespace NF.Main.Core.EnemyStateMachine
             base.Update();
 
             _timer += Time.deltaTime;
-            if (_timer >= _enemyController.IdleTime)
+            if (_timer >= _idleTime)
             {
                 _enemyController.EnemyState = EnemyState.Moving;
             }
