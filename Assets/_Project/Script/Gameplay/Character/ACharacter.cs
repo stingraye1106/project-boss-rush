@@ -8,7 +8,7 @@ using NF.Main.Gameplay.AbilitySystem;
 
 namespace NF.Main.Gameplay.Character
 {
-    public abstract class ACharacter : MonoExt, IAttacker, IDamageable, IMovable
+    public abstract class ACharacter : MonoExt, IAttacker, IDamageable, IMovable, IHealable
     {
         // Used when we need to compare if the character is a player or an enemy
         [SerializeField] private CharacterType _characterType;
@@ -22,6 +22,10 @@ namespace NF.Main.Gameplay.Character
         [TabGroup("Abilities")][SerializeField] protected Ability _basicAttackAbility;
         [TabGroup("Abilities")][SerializeField] protected List<Ability> _abilities;
 
+        // For buffs
+        protected bool _hasAttackBuff;
+        protected bool _hasDefenseBuff;
+
         // Movement logic
         protected IMovement _movement;
 
@@ -31,6 +35,8 @@ namespace NF.Main.Gameplay.Character
         public SpeedStat Speed => _speed;
         public Ability BasicAttackAbility => _basicAttackAbility;
         public List<Ability> Abilities => _abilities;
+        public bool HasAttackBuff { get => _hasAttackBuff; set => _hasAttackBuff = value; }
+        public bool HasDefenseBuff { get => _hasDefenseBuff; set => _hasDefenseBuff = value; }
 
 
 
@@ -39,6 +45,7 @@ namespace NF.Main.Gameplay.Character
             _movement = GetComponent<IMovement>();
             _movement.Speed = _speed.DefaultValue;
             _health.CurrentValue = _health.DefaultValue;
+            ResetCooldowns();
         }
 
         public abstract void Attack();
@@ -48,5 +55,20 @@ namespace NF.Main.Gameplay.Character
         public abstract void Move(Vector3 direction);
 
         public abstract void StopMovement();
+
+        public void Heal(float healAmount)
+        {
+            _health.CurrentValue += healAmount;
+            _health.CurrentValue = Mathf.Clamp(_health.CurrentValue, 0f, _health.DefaultValue);
+        }
+
+        private void ResetCooldowns()
+        {
+            _basicAttackAbility.CooldownTracker.ResetTracker();
+            foreach (var ability in _abilities)
+            {
+                ability.CooldownTracker.ResetTracker();
+            }
+        }
     }
 }

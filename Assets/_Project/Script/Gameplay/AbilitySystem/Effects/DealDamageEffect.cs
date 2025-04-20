@@ -8,11 +8,18 @@ namespace NF.Main.Gameplay.AbilitySystem.Effects
     public class DealDamageEffect : AEffect
     {
         [SerializeField] private Stat _damage;
+        [SerializeField] private float _enhancedDamageMultiplier;
+        private float _defaultDamageMultiplier;
+
+        private void OnEnable()
+        {
+            _defaultDamageMultiplier = 1.0f;
+        }
 
         // Logic for damage computation
-        private float ComputeDamage(float baseDamage, float additionalDamage)
+        private float ComputeDamage(float baseDamage, float additionalDamage, float damageMultiplier)
         {
-            return baseDamage + additionalDamage;
+            return (baseDamage + additionalDamage) * damageMultiplier;
         }
 
 
@@ -20,7 +27,8 @@ namespace NF.Main.Gameplay.AbilitySystem.Effects
         public override void ApplyEffect(GameObject source, GameObject target)
         {
             var sourceCharacter = source.GetComponent<ACharacter>();
-            var computedDamage = ComputeDamage(sourceCharacter.AttackPower.DefaultValue, _damage.DefaultValue);
+            var damageMultiplier = source.GetComponent<IAttacker>().HasAttackBuff ? _enhancedDamageMultiplier : _defaultDamageMultiplier;
+            var computedDamage = ComputeDamage(sourceCharacter.AttackPower.DefaultValue, _damage.DefaultValue, damageMultiplier);
 
             if (target.TryGetComponent(out IDamageable damageable))
                 damageable.TakeDamage(computedDamage);

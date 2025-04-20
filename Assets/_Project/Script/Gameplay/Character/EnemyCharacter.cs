@@ -43,7 +43,13 @@ namespace NF.Main.Gameplay.Character
         // Handles taken damage and transition to enemy death state.
         public override void TakeDamage(float damage)
         {
-            _health.CurrentValue -= damage;
+            if (_hasDefenseBuff)
+            {
+                _health.CurrentValue -= (damage / 2);
+            } else
+            {
+                _health.CurrentValue -= damage;
+            }
             Debug.Log($"Enemy took {damage} damage! Current enemy health: {_health.CurrentValue}");
 
             if (_health.CurrentValue <= 0) 
