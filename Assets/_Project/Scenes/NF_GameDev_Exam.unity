@@ -2919,6 +2919,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 61c18cfa01dfc3147a2344a4aee279d0, type: 2}
   - {fileID: 11400000, guid: 240dc8cba823aaf4ba21b20f69ae0fa1, type: 2}
   - {fileID: 11400000, guid: e4722ffe14acd164ea2dbd417f9b7b72, type: 2}
+  _sprintAbility: {fileID: 11400000, guid: b382fc0bacb450141be49e27fc85616f, type: 2}
 --- !u!65 &533851806
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7993,6 +7994,7 @@ MonoBehaviour:
   _chaseTarget: {fileID: 533851801}
   _idleTime: 1.5
   _hitStateDuration: 1
+  _idleAfterHitDuration: 0.5
 --- !u!1 &1819847709
 GameObject:
   m_ObjectHideFlags: 0
