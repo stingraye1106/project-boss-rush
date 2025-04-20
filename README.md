@@ -4,6 +4,10 @@ I've mostly focused on implementing the gameplay as it's the most important comp
 
 For the game itself, I'd like to showcase how the dodge/sprint mechanic and the pick-ups can add to the strategy of the player, giving more reason to maneuver around or dodge at the right timing or direction.​
 
+Play the game here: https://stingraye.itch.io/dungeon-hero
+
+Password: `bossfight` 
+
 ## How to Play
 
 Try to beat the boss before the boss beats you! Use your available skills at your disposal, dodge the boss attacks, and make use of the periodically-spawning pickups to gain an advantage!
