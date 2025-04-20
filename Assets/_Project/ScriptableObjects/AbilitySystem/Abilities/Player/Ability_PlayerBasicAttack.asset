@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8adc1ef41cc24c84a895d2d085547d2d, type: 3}
   m_Name: Ability_PlayerBasicAttack
   m_EditorClassIdentifier: 
-  _uniqueId: 0_p
+  _uniqueId: 0_p_basic
   _behaviourReference: {fileID: 11400000, guid: ea42cc64c365e4a488024b87eeacd422, type: 2}
   _cooldown: {fileID: 11400000, guid: d84d4633b44d5d4408e7b1ac940b8d18, type: 2}
