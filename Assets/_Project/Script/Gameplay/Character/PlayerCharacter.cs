@@ -18,6 +18,7 @@ namespace NF.Main.Gameplay.Character
         protected override void OnEnable()
         {
             base.OnEnable();
+            _sprintAbility.CooldownTracker.ResetTracker();
             OnDeath = new Subject<Unit>();
             OnHit = new Subject<Unit>();
         }
@@ -37,7 +38,14 @@ namespace NF.Main.Gameplay.Character
         // Handles damage taking and transition to player death state.
         public override void TakeDamage(float damage)
         {
-            _health.CurrentValue -= damage;
+            if (_hasDefenseBuff)
+            {
+                _health.CurrentValue -= (damage / 2f);
+            } else
+            {
+                _health.CurrentValue -= damage;
+            }
+
             Debug.Log($"Player took {damage} damage! Current player health: {_health.CurrentValue}");
 
             if (_health.CurrentValue <= 0 )
