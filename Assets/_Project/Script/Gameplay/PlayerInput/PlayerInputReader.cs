@@ -14,6 +14,7 @@ public class PlayerInputReader : SerializedScriptableObject, IPlayerActions, IUI
     public Subject<Unit> PlayerAbility2;
     public Subject<Unit> PlayerAbility3;
     public Subject<Unit> PauseTrigger;
+    public Subject<Unit> Sprint;
     
     
     private InputSystem_Actions _inputActions;
@@ -39,6 +40,7 @@ public class PlayerInputReader : SerializedScriptableObject, IPlayerActions, IUI
         PlayerAbility2 = new Subject<Unit>();
         PlayerAbility3 = new Subject<Unit>();
         PauseTrigger = new Subject<Unit>();
+        Sprint = new Subject<Unit>();
     }
     
     public void EnablePlayerActions() 
@@ -90,6 +92,10 @@ public class PlayerInputReader : SerializedScriptableObject, IPlayerActions, IUI
 
     public void OnSprint(InputAction.CallbackContext context)
     {
+        if (context.phase == InputActionPhase.Started)
+        {
+            Sprint.OnNext(UniRx.Unit.Default);
+        }
     }
 
     public void OnNavigate(InputAction.CallbackContext context)

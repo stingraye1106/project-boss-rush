@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 807d0e2018762ec4a8454762ab3ac9eb, type: 3}
+  m_Name: SpeedBoostEffect_PlayerSprint
+  m_EditorClassIdentifier: 
+  _speedMultiplierBoost: {fileID: 11400000, guid: 83b4e8260a493d14cbd5c87559ce107d, type: 2}
+  _defaultDuration: {fileID: 11400000, guid: 743d86a26e1d3474b9fb6f2e61031e1e, type: 2}
