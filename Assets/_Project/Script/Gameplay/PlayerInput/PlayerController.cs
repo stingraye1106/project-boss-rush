@@ -57,6 +57,7 @@ namespace NF.Main.Gameplay.PlayerInput
             AddEvent(_playerInput.PlayerAbility1, _ => OnActivateAbility1());
             AddEvent(_playerInput.PlayerAbility2, _ => OnActivateAbility2());
             AddEvent(_playerInput.PlayerAbility3, _ => OnActivateAbility3());
+            AddEvent(_playerInput.Sprint, _ => OnPlayerSprint());
             AddEvent(_playerCharacter.OnDeath, _ => OnEnterDeath());
             AddEvent(_playerCharacter.OnHit, _ => OnEnterHit());
         }
@@ -204,6 +205,17 @@ namespace NF.Main.Gameplay.PlayerInput
                     PlayerState = PlayerState.Idle;
                     _playerCharacter.StopMovement();
                 }
+            }
+        }
+
+        // Player sprint logic
+        private void OnPlayerSprint()
+        {
+            bool isSprintUsable = _playerCharacter.SprintAbility.CooldownTracker.CanUseAbility();
+
+            if (isSprintUsable)
+            {
+                _playerCharacter.Sprint();
             }
         }
 

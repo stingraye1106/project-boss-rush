@@ -1,3 +1,5 @@
+using NF.Main.Gameplay.AbilitySystem;
+using Sirenix.OdinInspector;
 using UniRx;
 using UnityEngine;
 
@@ -5,8 +7,13 @@ namespace NF.Main.Gameplay.Character
 {
     public class PlayerCharacter : ACharacter
     {
+        [TabGroup("Player-specific references")]
+        [SerializeField] private Ability _sprintAbility;
+
         public Subject<Unit> OnDeath;
         public Subject<Unit> OnHit;
+
+        public Ability SprintAbility => _sprintAbility;
 
         protected override void OnEnable()
         {
@@ -50,6 +57,11 @@ namespace NF.Main.Gameplay.Character
         public override void StopMovement()
         {
             _movement.Direction = Vector3.zero;
+        }
+
+        public void Sprint()
+        {
+            _sprintAbility.Use(gameObject);
         }
     }
 }
