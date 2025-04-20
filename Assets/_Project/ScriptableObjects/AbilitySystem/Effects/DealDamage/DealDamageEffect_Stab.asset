@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: DealDamageEffect_Stab
   m_EditorClassIdentifier: 
   _damage: {fileID: 11400000, guid: 88efd83632285934f9d83cd8dd917c41, type: 2}
+  _enhancedDamageMultiplier: 1.5
