@@ -16,6 +16,7 @@ namespace NF.Main.Gameplay.EnemyAI
         [TabGroup("Idle Settings")][SerializeField] private float _idleTime;
 
         [TabGroup("Hit State Settings")][SerializeField] private float _hitStateDuration;
+        [TabGroup("Hit State Settings")][SerializeField] private float _idleAfterHitDuration;
 
 
         private StateMachine _stateMachine;
@@ -71,6 +72,7 @@ namespace NF.Main.Gameplay.EnemyAI
             var ability1State = new EnemyAbility1State(this, _animator);
             var ability2State = new EnemyAbility2State(this, _animator);
             var ability3State = new EnemyAbility3State(this, _animator);
+            var idleAfterHitState = new EnemyIdleAfterHitState(this, _animator, _idleAfterHitDuration);
 
             // Define enemy state transitions here
             Any(movingState, new FuncPredicate(TransitionToMovingState));
@@ -84,6 +86,7 @@ namespace NF.Main.Gameplay.EnemyAI
             // Transitions when being hit / killed
             Any(deathState, new FuncPredicate(TransitionToDeathState));
             Any(hitState, new FuncPredicate(TransitionToHitState));
+            At(hitState, idleAfterHitState, new FuncPredicate(TransitionToIdleAfterHitState));
 
             // Set initial state here
             _stateMachine.SetState(movingState);
@@ -141,6 +144,12 @@ namespace NF.Main.Gameplay.EnemyAI
         private bool TransitionToAbility3State()
         {
             return EnemyState == EnemyState.Ability3;
+        }
+
+        // Func predicate for transitioning to idle after hit state
+        private bool TransitionToIdleAfterHitState()
+        {
+            return EnemyState == EnemyState.IdleAfterHit;
         }
 
         // Method called when invoking the on death event.

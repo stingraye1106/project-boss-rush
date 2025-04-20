@@ -28,7 +28,7 @@ namespace NF.Main.Core.EnemyStateMachine
             _timer += Time.deltaTime;
             if (_timer >= _hitStateDuration)
             {
-                _enemyController.EnemyState = EnemyState.Moving;
+                _enemyController.EnemyState = EnemyState.IdleAfterHit;
             }
         }
 

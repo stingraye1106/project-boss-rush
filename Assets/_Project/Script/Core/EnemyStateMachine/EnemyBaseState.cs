@@ -16,6 +16,7 @@ namespace NF.Main.Core.EnemyStateMachine
         protected static readonly int Ability1Hash = Animator.StringToHash("Ability 1");
         protected static readonly int Ability2Hash = Animator.StringToHash("Ability 2");
         protected static readonly int Ability3Hash = Animator.StringToHash("Ability 3");
+        protected static readonly int IdleAfterHitHash = Animator.StringToHash("IdleAfterHit");
 
         protected EnemyBaseState(EnemyController enemyController, Animator animator)
         {
@@ -34,7 +35,8 @@ namespace NF.Main.Core.EnemyStateMachine
         Decide,
         Ability1,
         Ability2,
-        Ability3
+        Ability3,
+        IdleAfterHit
     }
 }
 
