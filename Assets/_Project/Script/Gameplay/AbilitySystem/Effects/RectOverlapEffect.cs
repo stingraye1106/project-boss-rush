@@ -14,6 +14,7 @@ namespace NF.Main.Gameplay.AbilitySystem.Effects
         [SerializeField] private List<AEffect> _effects;
         [SerializeField] private LayerMask _layerMask;
         private float _offset = 2f;
+        private float _dotThreshold = 0.25f;
 
 
         // Returns a list of colliders based from center, width, height, depth, and rotation using Physics.OverlapBox.
@@ -22,6 +23,14 @@ namespace NF.Main.Gameplay.AbilitySystem.Effects
             var boxExtents = new Vector3(width, height, depth);
             var offset = Vector3.forward * _offset;
             return Physics.OverlapBox(centerPos + offset, boxExtents, rotation, _layerMask);
+        }
+
+        // Function for getting the dot product which will be used if the target is in front of the source/user of the ability
+        private float GetDotFromSourceToTarget(GameObject source, GameObject target)
+        {
+            Vector3 toTarget = (target.transform.position - source.transform.position).normalized;
+            float dot = Vector3.Dot(source.transform.forward, toTarget);
+            return dot;
         }
 
 
@@ -38,8 +47,10 @@ namespace NF.Main.Gameplay.AbilitySystem.Effects
             {
                 Debug.Log(collider.gameObject.name);
                 // Prevents friendly fire. Instead of comparing string-based tags, we compare the character types within the character class.
+                // Also check if it is in front of the source.
                 var colliderCharacter = collider.GetComponent<ACharacter>();
-                if (colliderCharacter.CharacterType != sourceCharacter.CharacterType)
+                var dotFromSourceToHit = GetDotFromSourceToTarget(source, collider.gameObject);
+                if (colliderCharacter.CharacterType != sourceCharacter.CharacterType && dotFromSourceToHit > _dotThreshold)
                 {
                     var hitCharacter = collider.gameObject;
 
